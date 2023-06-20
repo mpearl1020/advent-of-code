@@ -32,7 +32,56 @@ int main() {
         }
     }
 
-    
+    int visible = 0;
+
+    // algorithm - O(n^3)
+    for (int r = 1; r < numRows - 1; r++) {
+        for (int c = 1; c < numCols - 1; c++) {
+            int leftMax = 0;
+            int rightMax = 0;
+            int topMax = 0;
+            int bottomMax = 0;
+
+            // left
+            for (int j = c - 1; j >= 0; j--) {
+                if (grid[r][j] > leftMax) {
+                    leftMax = grid[r][j];
+                }
+            }
+
+            // right
+            for (int j = c + 1; j < numCols; j++) {
+                if (grid[r][j] > rightMax) {
+                    rightMax = grid[r][j];
+                }
+            }
+
+            // top
+            for (int i = r - 1; i >= 0; i--) {
+                if (grid[i][c] > topMax) {
+                    topMax = grid[i][c];
+                }
+            }
+
+            // bottom
+            for (int i = r + 1; i < numRows; i++) {
+                if (grid[i][c] > bottomMax) {
+                    bottomMax = grid[i][c];
+                }
+            }
+
+            int currTree = grid[r][c];
+
+            if (leftMax < currTree || rightMax < currTree || topMax < currTree || bottomMax < currTree) {
+                visible++;
+            }
+        }
+    }    
+
+    // account for edges
+    visible += (2 * numRows + 2 * (numCols - 2));
+
+    printf("Number of visible trees: %d\n", visible);
 
     return 0;
 }
