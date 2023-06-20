@@ -145,5 +145,7 @@ int main() {
 
     printf("Max scenic score: %d\n", maxScenic);
 
+    free(line);
+
     return 0;
 }
