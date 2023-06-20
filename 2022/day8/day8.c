@@ -32,56 +32,118 @@ int main() {
         }
     }
 
-    int visible = 0;
+    // int visible = 0;
 
-    // algorithm - O(n^3)
-    for (int r = 1; r < numRows - 1; r++) {
-        for (int c = 1; c < numCols - 1; c++) {
-            int leftMax = 0;
-            int rightMax = 0;
-            int topMax = 0;
-            int bottomMax = 0;
+    // // part 1 algorithm - O(n^3)
+    // for (int r = 1; r < numRows - 1; r++) {
+    //     for (int c = 1; c < numCols - 1; c++) {
+    //         int leftMax = 0;
+    //         int rightMax = 0;
+    //         int topMax = 0;
+    //         int bottomMax = 0;
 
-            // left
-            for (int j = c - 1; j >= 0; j--) {
-                if (grid[r][j] > leftMax) {
-                    leftMax = grid[r][j];
-                }
-            }
+    //         // left
+    //         for (int j = c - 1; j >= 0; j--) {
+    //             if (grid[r][j] > leftMax) {
+    //                 leftMax = grid[r][j];
+    //             }
+    //         }
 
-            // right
-            for (int j = c + 1; j < numCols; j++) {
-                if (grid[r][j] > rightMax) {
-                    rightMax = grid[r][j];
-                }
-            }
+    //         // right
+    //         for (int j = c + 1; j < numCols; j++) {
+    //             if (grid[r][j] > rightMax) {
+    //                 rightMax = grid[r][j];
+    //             }
+    //         }
 
-            // top
-            for (int i = r - 1; i >= 0; i--) {
-                if (grid[i][c] > topMax) {
-                    topMax = grid[i][c];
-                }
-            }
+    //         // top
+    //         for (int i = r - 1; i >= 0; i--) {
+    //             if (grid[i][c] > topMax) {
+    //                 topMax = grid[i][c];
+    //             }
+    //         }
 
-            // bottom
-            for (int i = r + 1; i < numRows; i++) {
-                if (grid[i][c] > bottomMax) {
-                    bottomMax = grid[i][c];
-                }
-            }
+    //         // bottom
+    //         for (int i = r + 1; i < numRows; i++) {
+    //             if (grid[i][c] > bottomMax) {
+    //                 bottomMax = grid[i][c];
+    //             }
+    //         }
+
+    //         int currTree = grid[r][c];
+
+    //         if (leftMax < currTree || rightMax < currTree || topMax < currTree || bottomMax < currTree) {
+    //             visible++;
+    //         }
+    //     }
+    // }    
+
+    // // account for edges
+    // visible += (2 * numRows + 2 * (numCols - 2));
+
+    // printf("Number of visible trees: %d\n", visible);
+
+    // part 2 algorithm
+    int maxScenic = 0;
+
+    for (int r = 0; r < numRows; r++) {
+        for (int c = 0; c < numCols; c++) {
+            int leftScenic = 0;
+            int rightScenic = 0;
+            int topScenic = 0;
+            int bottomScenic = 0;
 
             int currTree = grid[r][c];
 
-            if (leftMax < currTree || rightMax < currTree || topMax < currTree || bottomMax < currTree) {
-                visible++;
+            // left
+            int cp = c - 1;
+            while (cp >= 0) {
+                leftScenic++;
+                if (grid[r][cp] >= currTree) {
+                    break;
+                }
+                cp--;
+            }
+
+            // right
+            cp = c + 1;
+            while (cp < numCols) {
+                rightScenic++;
+                if (grid[r][cp] >= currTree) {
+                    break;
+                }
+                cp++;
+            }
+
+            // top
+            int rp = r - 1;
+            while (rp >= 0) {
+                topScenic++;
+                if (grid[rp][c] >= currTree) {
+                    break;
+                }
+                rp--;
+            }
+
+            // bottom
+            rp = r + 1;
+            while (rp < numRows) {
+                bottomScenic++;
+                if (grid[rp][c] >= currTree) {
+                    break;
+                }
+                rp++;
+            }
+
+            int currScenic = leftScenic * rightScenic * topScenic * bottomScenic;
+
+            if (currScenic > maxScenic) {
+                maxScenic = currScenic;
             }
         }
-    }    
+    }
 
-    // account for edges
-    visible += (2 * numRows + 2 * (numCols - 2));
-
-    printf("Number of visible trees: %d\n", visible);
+    printf("Max scenic score: %d\n", maxScenic);
 
     return 0;
 }
